@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soluciones Tecnologicas y graficas Click</title>
+ 
+  <script src="https://cdn.tailwindcss.com"></script>
+ 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+ 
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+ 
+  <link rel="stylesheet" href="Colores.css" />
+</head>
+<body class="custom-bg text-slate-200 min-h-screen antialiased">
+
+  
+  <div id="screen-login" class="screen flex items-center justify-center min-h-screen p-4 custom-login-bg">
+    <div class="bg-slate-900/95 backdrop-blur-md rounded-2xl shadow-2xl p-8 md:p-10 w-full max-w-md border border-slate-700/60 text-white">
+      <div class="text-center mb-6 flex flex-col items-center">
+        <div class="w-20 h-20 rounded-2xl shadow-lg shadow-orange-500/30 overflow-hidden mb-4 border border-orange-500/50 flex items-center justify-center bg-orange-600">
+          <svg viewBox="0 0 500 500" class="w-full h-full object-cover">
+            <rect width="500" height="500" fill="#f97316"/>
+            <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Inter, sans-serif" font-weight="800" font-size="110">Gpocli<tspan fill="#ef4444">c</tspan>k</text>
+            
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-white">Gpoclick</h1>
+        <p class="text-slate-400 text-xs mt-1">Soluciones Tecnológicas</p>
+      </div>
+
+      <div id="login-error" class="hidden mb-4 p-3 rounded-xl bg-rose-950/80 border border-rose-500/50 text-rose-200 text-xs flex items-center gap-2">
+        <i class="fa-solid fa-circle-exclamation text-base shrink-0"></i>
+        <span id="login-error-msg">El usuario o la contraseña son incorrectos.</span>
+      </div>
+
+      <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Usuario / Correo</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+              <i class="fa-regular fa-envelope"></i>
+            </span>
+            <input type="text" id="input-username" required class="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500 transition" placeholder="admin@taller.com" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Contraseña</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+              <i class="fa-solid fa-lock"></i>
+            </span>
+            <input type="password" id="input-password" required class="w-full pl-10 pr-10 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500 transition" placeholder="••••••••" />
+            <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-white">
+              <i id="toggle-password-icon" class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-xs pt-1">
+          <button type="button" onclick="openResetModal('pass')" class="text-orange-400 hover:underline">¿Olvidaste tu contraseña?</button>
+          <button type="button" onclick="openResetModal('email')" class="text-orange-400 hover:underline">¿Cambiar correo?</button>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-xl shadow-lg shadow-orange-500/25 transition duration-200 flex items-center justify-center gap-2 mt-2">
+          <i class="fa-solid fa-right-to-bracket text-sm"></i>
+          Ingresar al Sistema
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- APLICACIÓN PRINCIPAL -->
+  <div id="app-container" class="screen hidden min-h-screen flex flex-col md:flex-row">
+
+    <!-- BARRA LATERAL -->
+    <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 text-slate-300 flex flex-col justify-between shrink-0">
+      <div>
+        <div class="p-5 border-b border-slate-800 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl overflow-hidden shadow-md shadow-orange-500/30 border border-orange-500/40 flex items-center justify-center bg-orange-600 shrink-0">
+            <svg viewBox="0 0 500 500" class="w-full h-full object-cover">
+              <rect width="500" height="500" fill="#f97316"/>
+              <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Inter, sans-serif" font-weight="800" font-size="200">G</text>
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-bold text-white text-base leading-tight">Gpoclick</h2>
+            <p class="text-[10px] text-slate-400">Servicio Técnico</p>
+          </div>
+        </div>
+
+        <nav class="p-4 space-y-1">
+          <a href="#" onclick="showSection('list')" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition bg-orange-500 text-white shadow-md shadow-orange-500/20">
+            <i class="fa-solid fa-house w-5 text-center"></i> Inicio / Clientes
+          </a>
+          <a href="#" onclick="openCreateForm()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-orange-400 transition">
+            <i class="fa-solid fa-plus w-5 text-center"></i> Nueva Boleta
+          </a>
+          <a href="#" onclick="toggleLegendModal()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-orange-400 transition">
+            <i class="fa-solid fa-circle-info w-5 text-center text-amber-400"></i> Ver Leyenda
+          </a>
+        </nav>
+      </div>
+
+      <div class="p-4 border-t border-slate-800">
+        <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-rose-400 transition">
+          <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+
+    
+    <main class="flex-1 flex flex-col min-w-0 bg-transparent">
+
+      <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-10 shadow-md">
+        <div class="flex-1 max-w-md relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input type="text" id="global-search" oninput="renderTable()" placeholder="Buscar por cliente, teléfono, equipo..." class="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-400 focus:border-orange-500 focus:outline-none transition" />
+        </div>
+      </header>
+
+      <div class="p-6 md:p-8 flex-1 max-w-7xl w-full mx-auto">
+
+        
+        <section id="view-list" class="space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-800 shadow-sm text-white">
+            <div>
+              <h1 class="text-2xl font-bold">Registro de Equipos y Reparaciones</h1>
+              <p class="text-slate-400 text-sm">Listado general de órdenes de servicio registradas.</p>
+            </div>
+            <button onclick="openCreateForm()" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-medium shadow-md shadow-orange-500/20 transition">
+              <i class="fa-solid fa-plus"></i> Nueva Boleta
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div onclick="filterByStatus('Activo')" class="bg-slate-900/80 backdrop-blur-md p-4 rounded-xl border border-slate-800 shadow-sm flex items-center gap-4 cursor-pointer hover:border-emerald-500/50 transition">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-lg shrink-0"><i class="fa-solid fa-circle-check"></i></div>
+              <div>
+                <p class="text-xs text-slate-400 font-medium">Activos</p>
+                <p id="stat-activo" class="text-2xl font-bold text-white">0</p>
+              </div>
+            </div>
+
+            <div onclick="filterByStatus('Inactivo')" class="bg-slate-900/80 backdrop-blur-md p-4 rounded-xl border border-slate-800 shadow-sm flex items-center gap-4 cursor-pointer hover:border-rose-500/50 transition">
+              <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center font-bold text-lg shrink-0"><i class="fa-solid fa-circle-xmark"></i></div>
+              <div>
+                <p class="text-xs text-slate-400 font-medium">Inactivos</p>
+                <p id="stat-inactivo" class="text-2xl font-bold text-white">0</p>
+              </div>
+            </div>
+
+            <div onclick="filterByStatus('Pendiente')" class="bg-slate-900/80 backdrop-blur-md p-4 rounded-xl border border-slate-800 shadow-sm flex items-center gap-4 cursor-pointer hover:border-amber-500/50 transition">
+              <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold text-lg shrink-0"><i class="fa-solid fa-clock"></i></div>
+              <div>
+                <p class="text-xs text-slate-400 font-medium">Pendientes</p>
+                <p id="stat-pendiente" class="text-2xl font-bold text-white">0</p>
+              </div>
+            </div>
+
+            <div onclick="filterByStatus('Pagado')" class="bg-slate-900/80 backdrop-blur-md p-4 rounded-xl border border-slate-800 shadow-sm flex items-center gap-4 cursor-pointer hover:border-blue-500/50 transition">
+              <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold text-lg shrink-0"><i class="fa-solid fa-circle-dollar-to-slot"></i></div>
+              <div>
+                <p class="text-xs text-slate-400 font-medium">Pagados</p>
+                <p id="stat-pagado" class="text-2xl font-bold text-white">0</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/90 backdrop-blur-md rounded-2xl border border-slate-800 shadow-sm overflow-hidden">
+            <div class="p-4 border-b border-slate-800 bg-slate-950/40 flex justify-between items-center text-xs text-slate-400">
+              <button onclick="filterByStatus('ALL')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg font-medium transition">Mostrar Todos</button>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-300 border-collapse">
+                <thead class="bg-slate-950/60 text-slate-400 font-semibold uppercase tracking-wider border-b border-slate-800">
+                  <tr>
+                    <th class="py-3.5 px-4">ID</th>
+                    <th class="py-3.5 px-4">Cliente</th>
+                    <th class="py-3.5 px-4">Teléfono</th>
+                    <th class="py-3.5 px-4">F. Ingreso</th>
+                    <th class="py-3.5 px-4">Equipo / Marca</th>
+                    <th class="py-3.5 px-4">Total</th>
+                    <th class="py-3.5 px-4 text-center">Estado</th>
+                    <th class="py-3.5 px-4 text-center">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="clients-tbody" class="divide-y divide-slate-800">
+                
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        
+        <section id="view-form" class="hidden space-y-6 max-w-5xl mx-auto">
+          <div class="flex items-center gap-3">
+            <button onclick="showSection('list')" class="w-9 h-9 bg-slate-800 text-slate-300 hover:text-white rounded-xl border border-slate-700 flex items-center justify-center transition shadow-sm"><i class="fa-solid fa-arrow-left"></i></button>
+            <div>
+              <h1 id="form-title" class="text-xl font-bold text-white">Nueva Boleta de Reparación</h1>
+              <p class="text-slate-400 text-xs">Ingresa los datos correspondientes para generar la orden.</p>
+            </div>
+          </div>
+
+          <form id="client-form" onsubmit="saveClient(event)" class="bg-slate-900/90 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-slate-800 shadow-sm space-y-6 text-slate-200">
+            <input type="hidden" id="form-client-id" />
+
+            <!-- DATOS GENERALES -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-slate-950/50 rounded-xl border border-slate-800">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Estado *</label>
+                <select id="field-status" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-xs font-semibold text-white">
+                  <option value="Activo">🟢 Activo</option>
+                  <option value="Inactivo">🔴 Inactivo</option>
+                  <option value="Pendiente">🟡 Pendiente</option>
+                  <option value="Entregado">🔵 Entregado</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha Ingreso *</label>
+                <input type="date" id="field-entry-date" required class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-xs text-white" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha Egreso</label>
+                <input type="date" id="field-exit-date" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-xs text-white" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Teléfono *</label>
+                <input type="text" id="field-phone" required placeholder="Ej. 5555-1234" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-500" />
+              </div>
+              <div class="md:col-span-4">
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre del Cliente *</label>
+                <input type="text" id="field-client-name" required placeholder="Nombre completo" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-500" />
+              </div>
+            </div>
+
+            <!-- EQUIPO / MARCA -->
+            <div class="border border-slate-800 rounded-xl p-4 space-y-3">
+              <h3 class="font-bold text-xs uppercase tracking-wider text-orange-400">Marca / Equipo</h3>
+              <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2 text-xs">
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Hp"> HP</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Lenovo"> Lenovo</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Toshiba"> Toshiba</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Acer"> Acer</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Asus"> Asus</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Dell"> Dell</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Huawei"> Huawei</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Sony"> Sony</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Xiaomi"> Xiaomi</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Chrome"> Chrome</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Clon"> Clon</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Macbook Pro"> Macbook Pro</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Macbook Air"> Macbook Air</label>
+                <label class="flex items-center gap-1.5"><input type="checkbox" name="eq-brand" value="Apple iMac"> Apple iMac</label>
+              </div>
+              <div class="pt-2">
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Modelo / Mod No.:</label>
+                <input type="text" id="field-model" placeholder="Marca/equipo..." class="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-500" />
+              </div>
+            </div>
+
+            <!-- IMPRESORAS, ACCESORIOS Y MÓVILES -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="border border-slate-800 rounded-xl p-3 space-y-2">
+                <h4 class="font-bold text-xs uppercase text-slate-300">Impresoras</h4>
+                <div class="grid grid-cols-3 gap-1 text-xs">
+                  <label><input type="checkbox" name="printer" value="Canon"> Canon</label>
+                  <label><input type="checkbox" name="printer" value="Epson"> Epson</label>
+                  <label><input type="checkbox" name="printer" value="HP"> HP</label>
+                </div>
+                <input type="text" id="field-printer-mod" placeholder="Modelo Impresora" class="w-full px-2 py-1 bg-slate-800 border border-slate-700 rounded text-xs text-white placeholder-slate-500" />
+              </div>
+
+              <div class="border border-slate-800 rounded-xl p-3 space-y-2">
+                <h4 class="font-bold text-xs uppercase text-slate-300">Cables / Adicionales</h4>
+                <div class="grid grid-cols-2 gap-1 text-xs">
+                  <label><input type="checkbox" id="acc-power" value="Cable Power"> Cable Power</label>
+                  <label><input type="checkbox" id="acc-datos" value="Cable Datos"> Cable Datos</label>
+                </div>
+                <input type="text" id="field-acc-otros" placeholder="Otros accesorios" class="w-full px-2 py-1 bg-slate-800 border border-slate-700 rounded text-xs text-white placeholder-slate-500" />
+              </div>
+
+              <div class="border border-slate-800 rounded-xl p-3 space-y-2">
+                <h4 class="font-bold text-xs uppercase text-slate-300">Celulares / Tablets</h4>
+                <div class="grid grid-cols-2 gap-1 text-xs">
+                  <label><input type="checkbox" name="mobile" value="Samsung"> Samsung</label>
+                  <label><input type="checkbox" name="mobile" value="Huawei"> Huawei</label>
+                  <label><input type="checkbox" name="mobile" value="Xiaomi"> Xiaomi</label>
+                  <label><input type="checkbox" name="mobile" value="Motorola"> Motorola</label>
+                  <label><input type="checkbox" name="mobile" value="iPad"> iPad</label>
+                  <label><input type="checkbox" name="mobile" value="iPhone"> iPhone</label>
+                </div>
+              </div>
+            </div>
+
+            
+            <div class="space-y-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Daños y desgastes en:</label>
+                <textarea id="field-problem" rows="2" placeholder="Síntomas que presenta el equipo..." class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500"></textarea>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Descripción de la reparación:</label>
+                <textarea id="field-repair" rows="2" placeholder="Trabajo realizado o componentes cambiados..." class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500"></textarea>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-orange-400 mb-1">Daños y desgastes en:</label>
+                <textarea id="field-general-desc" rows="3" placeholder=" observaciones o notas importantes..." class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500"></textarea>
+              </div>
+            </div>
+
+            
+            <div class="border border-slate-800 rounded-xl p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+              <div>
+                <span class="font-bold block mb-1 text-slate-300">Cargador:</span>
+                <label class="mr-2"><input type="radio" name="cargador" value="Original"> Original</label>
+                <label class="mr-2"><input type="radio" name="cargador" value="Genérico"> Genérico</label>
+                <label><input type="radio" name="cargador" value="No tiene"> No tiene</label>
+              </div>
+              <div>
+                <span class="font-bold block mb-1 text-slate-300">Batería:</span>
+                <label class="mr-2"><input type="radio" name="bateria" value="Original"> Original</label>
+                <label class="mr-2"><input type="radio" name="bateria" value="Genérico"> Genérico</label>
+                <label><input type="radio" name="bateria" value="No tiene"> No tiene</label>
+              </div>
+              <div>
+                <span class="font-bold block mb-1 text-slate-300">Teclado:</span>
+                <label class="mr-2"><input type="radio" name="teclado" value="Si"> Sí</label>
+                <label><input type="radio" name="teclado" value="No"> No</label>
+              </div>
+              <div>
+                <span class="font-bold block mb-1 text-slate-300">Mouse:</span>
+                <label class="mr-2"><input type="radio" name="mouse" value="Si"> Sí</label>
+                <label><input type="radio" name="mouse" value="No"> No</label>
+              </div>
+              <div>
+                <span class="font-bold block mb-1 text-slate-300">Maletín:</span>
+                <label class="mr-2"><input type="radio" name="maletin" value="Si"> Sí</label>
+                <label><input type="radio" name="maletin" value="No"> No</label>
+              </div>
+              <div>
+                <span class="font-bold block mb-1 text-slate-300">Otros:</span>
+                <input type="text" id="field-otros-accesorios" class="w-full px-2 py-1 border border-slate-700 bg-slate-800 rounded text-white" />
+              </div>
+            </div>
+
+           
+            <div class="border border-slate-800 rounded-xl p-4 space-y-3 text-xs">
+              <h4 class="font-bold text-orange-400 uppercase">Especificaciones del Hardware</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <span class="font-bold block mb-1 text-slate-300">Procesador:</span>
+                  <div class="flex gap-3 mb-2">
+                    <label><input type="radio" name="cpu" value="Intel"> Intel</label>
+                    <label><input type="radio" name="cpu" value="AMD"> AMD</label>
+                    <label><input type="radio" name="cpu" value="Apple"> Apple</label>
+                  </div>
+                  <input type="text" id="field-cpu-gen" placeholder="Generación / Tipo" class="w-full px-2 py-1 border border-slate-700 bg-slate-800 text-white rounded placeholder-slate-500" />
+                </div>
+
+                <div>
+                  <span class="font-bold block mb-1 text-slate-300">Memoria RAM:</span>
+                  <div class="flex gap-3 mb-2">
+                    <label><input type="radio" name="ram" value="DDR2"> DDR2</label>
+                    <label><input type="radio" name="ram" value="DDR3"> DDR3</label>
+                    <label><input type="radio" name="ram" value="DDR4"> DDR4</label>
+                     <label><input type="radio" name="ram" value="DDR4"> DDR5</label>
+                  </div>
+                  <input type="text" id="field-ram-cap" placeholder="Capacidad " class="w-full px-2 py-1 border border-slate-700 bg-slate-800 text-white rounded placeholder-slate-500" />
+                </div>
+
+                <div class="md:col-span-2">
+                  <span class="font-bold block mb-1 text-slate-300">Almacenamiento (Disco):</span>
+                  <div class="flex flex-wrap gap-3 mb-2">
+                    <label><input type="radio" name="hdd" value="SATA"> SATA</label>
+                    <label><input type="radio" name="hdd" value="SSD"> SSD</label>
+                    <label><input type="radio" name="hdd" value="SSDM.2"> SSD M.2</label>
+                    <label><input type="radio" name="hdd" value="ChipSSD"> ChipSSD</label>
+                  </div>
+                  <input type="text" id="field-hdd-cap" placeholder="Capacidad " class="w-full px-2 py-1 border border-slate-700 bg-slate-800 text-white rounded placeholder-slate-500" />
+                </div>
+              </div>
+            </div>
+
+            
+            <div class="bg-amber-950/30 border border-amber-800/60 rounded-xl p-4 space-y-4">
+              <h3 class="font-bold text-amber-400 text-xs uppercase tracking-wider">Desglose Financiero (Q.)</h3>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                <div>
+                  <label class="block font-semibold mb-1 text-slate-300">Diagnóstico Q.</label>
+                  <input type="number" step="0.01" id="cost-diag" oninput="calculateTotals()" placeholder="0.00" class="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 text-white rounded" />
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1 text-slate-300">Reparación Q.</label>
+                  <input type="number" step="0.01" id="cost-repair" oninput="calculateTotals()" placeholder="0.00" class="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 text-white rounded" />
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1 text-slate-300">Backup Q.</label>
+                  <input type="number" step="0.01" id="cost-backup" oninput="calculateTotals()" placeholder="0.00" class="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 text-white rounded" />
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1 text-slate-300">Otros Q.</label>
+                  <input type="number" step="0.01" id="cost-others" oninput="calculateTotals()" placeholder="0.00" class="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 text-white rounded" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-3 gap-4 pt-2 border-t border-amber-800/60 text-xs">
+                <div>
+                  <label class="block font-bold text-amber-300 mb-1">TOTAL Q.</label>
+                  <input type="number" step="0.01" id="cost-total" readonly class="w-full px-3 py-1.5 bg-amber-900/50 font-bold border border-amber-700 rounded text-amber-200" placeholder="0.00" />
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-300 mb-1">Anticipo Q.</label>
+                  <input type="number" step="0.01" id="cost-advance" oninput="calculateTotals()" placeholder="0.00" class="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 text-white rounded" />
+                </div>
+                <div>
+                  <label class="block font-bold text-emerald-400 mb-1">Saldo Q.</label>
+                  <input type="number" step="0.01" id="cost-balance" readonly class="w-full px-3 py-1.5 bg-emerald-950 font-bold border border-emerald-800 rounded text-emerald-300" placeholder="0.00" />
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
+              <button type="button" onclick="showSection('list')" class="px-5 py-2.5 border border-slate-700 text-slate-300 font-medium rounded-xl hover:bg-slate-800 text-sm transition">Cancelar</button>
+              <button type="submit" class="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-xl text-sm shadow-md shadow-orange-500/20 transition">Guardar Boleta</button>
+            </div>
+          </form>
+        </section>
+
+        <section id="view-details" class="hidden space-y-6 max-w-4xl mx-auto">
+          <div class="flex items-center justify-between gap-4">
+            <button onclick="showSection('list')" class="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-300 bg-slate-800 border border-slate-700 rounded-xl hover:bg-slate-700 transition"><i class="fa-solid fa-arrow-left"></i> Volver al listado</button>
+            <div class="flex gap-2">
+              <button id="btn-download-pdf" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-xl transition flex items-center gap-1.5 shadow-md"><i class="fa-solid fa-file-pdf"></i> Descargar PDF</button>
+              <button id="btn-edit-detail" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium rounded-xl transition flex items-center gap-1.5 shadow-md"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
+              <button id="btn-delete-detail" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-medium rounded-xl transition flex items-center gap-1.5 shadow-md"><i class="fa-solid fa-trash-can"></i> Eliminar</button>
+            </div>
+          </div>
+
+          
+          <div id="pdf-printable-area" class="bg-white text-slate-800 shadow-lg overflow-hidden p-8 space-y-6">
+            
+            <!-- Cabecera con datos del cliente y Nuevo Logo / Teléfonos / Orden de ingreso -->
+            <div class="flex items-start justify-between border-b border-slate-200 pb-5">
+              <div>
+                
+               <div class="w-full flex flex-col items-center justify-center text-center my-4">
+  <h1 class="text-3xl font-black text-orange-600 tracking-wider">ORDEN</h1>
+  <h2 class="text-sm font-bold text-orange-600 tracking-widest uppercase">DE INGRESO EQUIPO</h2>
+</div>
+
+                <h2 id="detail-name" class="text-2xl font-bold text-slate-900 mt-0.5">Nombre Cliente</h2>
+                <p id="detail-id" class="text-xs text-slate-500 font-mono font-bold mt-0.5">ID: CLI-000</p>
+                <div id="detail-status-badge" class="mt-2 inline-block"></div>
+              </div>
+              
+              
+              <div class="flex flex-col items-end gap-2">
+                <div class="flex items-center gap-2">
+                  <div class="text-right space-y-1.5">
+  
+  <div class="font-extrabold text-slate-900 text-3xl tracking-tight leading-none">
+    Gpocli<span class="text-red-600">c</span>k
+  </div>
+  
+  
+  <div class="block text-[10px] text-slate-500 font-medium tracking-wide uppercase">
+    tecnología y servicio técnico
+  </div>
+</div>
+                  
+                  
+                </div>
+
+                <!-- Teléfonos con símbolo de WhatsApp -->
+                <div class="text-right text-xs font-semibold text-slate-700 space-y-0.5 pt-1">
+                  <p class="flex items-center justify-end gap-1.5"><i class="fa-solid fa-phone text-slate-700 text-sm"></i> 6676-2563</p>
+                  <p class="flex items-center justify-end gap-1.5"><i class="fa-brands fa-whatsapp text-emerald-600 text-base"></i> 4792-5134</p>
+                </div>
+              </div>
+            </div>
+
+            
+            <div id="detail-content" class="text-xs space-y-4 text-slate-700">
+             
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <div id="modal-reset" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-800 text-white space-y-4 relative">
+      <button onclick="closeResetModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+
+      <div id="reset-step-1" class="space-y-4">
+        <div>
+          <h3 id="reset-title" class="font-bold text-white text-lg">Restablecer Contraseña</h3>
+          <p class="text-slate-400 text-xs mt-1">Ingresa tu correo registrado para recibir tu código de seguridad.</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Correo Electrónico</label>
+          <input type="email" id="reset-email-input" value="admin@taller.com" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="ejemplo@correo.com" />
+        </div>
+
+        <button type="button" onclick="sendVerificationCode()" class="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-xl text-xs transition">
+          Enviar código de verificación
+        </button>
+      </div>
+
+      <div id="reset-step-2" class="space-y-4 hidden">
+        <div>
+          <h3 class="font-bold text-white text-lg">Verificación de Código</h3>
+          <p class="text-slate-400 text-xs mt-1">Ingresa el código que se generó a continuación.</p>
+        </div>
+
+        <div class="p-3 bg-amber-950/60 border border-amber-800/80 text-amber-200 rounded-xl text-xs">
+          <strong>Código de verificación:</strong> <span id="simulated-code" class="font-mono font-bold text-sm tracking-widest text-orange-400">123456</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Código de 6 dígitos</label>
+          <input type="text" id="reset-code-input" maxlength="6" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 text-white rounded-xl text-center font-mono text-base tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="000000" />
+        </div>
+
+        <div id="new-password-field">
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Nueva Contraseña</label>
+          <input type="password" id="reset-new-password" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nueva contraseña" />
+        </div>
+
+        <div id="new-email-field" class="hidden">
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Nuevo Correo</label>
+          <input type="email" id="reset-new-email" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="nuevo@correo.com" />
+        </div>
+
+        <button type="button" onclick="verifyAndChange()" class="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-xl text-xs transition">
+          Guardar Cambios
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-legend" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-800 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="font-bold text-white text-lg flex items-center gap-2"><i class="fa-solid fa-circle-info text-amber-400"></i> Leyenda de Estados</h3>
+        <button onclick="toggleLegendModal()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="p-3 rounded-xl bg-emerald-950/50 border border-emerald-800/60 flex items-start gap-3">
+          <span class="w-3 h-3 rounded-full bg-emerald-500 shrink-0 mt-0.5"></span>
+          <div><p class="font-bold text-emerald-300">🟢 Activo</p><p class="text-emerald-400 mt-0.5">El equipo se encuentra actualmente en proceso de diagnóstico o reparación.</p></div>
+        </div>
+        <div class="p-3 rounded-xl bg-rose-950/50 border border-rose-800/60 flex items-start gap-3">
+          <span class="w-3 h-3 rounded-full bg-rose-500 shrink-0 mt-0.5"></span>
+          <div><p class="font-bold text-rose-300">🔴 Inactivo</p><p class="text-rose-400 mt-0.5">Orden o servicio cancelado / descartado.</p></div>
+        </div>
+        <div class="p-3 rounded-xl bg-amber-950/50 border border-amber-800/60 flex items-start gap-3">
+          <span class="w-3 h-3 rounded-full bg-amber-500 shrink-0 mt-0.5"></span>
+          <div><p class="font-bold text-amber-300">🟡 Pendiente</p><p class="text-amber-400 mt-0.5">En espera de repuestos o confirmación por parte del cliente.</p></div>
+        </div>
+        <div class="p-3 rounded-xl bg-blue-950/50 border border-blue-800/60 flex items-start gap-3">
+          <span class="w-3 h-3 rounded-full bg-blue-500 shrink-0 mt-0.5"></span>
+          <div><p class="font-bold text-blue-300">🔵 Entregado</p><p class="text-blue-400 mt-0.5">Equipo listo, entregado y pagado en su totalidad.</p></div>
+        </div>
+      </div>
+      <button onclick="toggleLegendModal()" class="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-xl text-xs">Cerrar</button>
+    </div>
+  </div>
+
+
+
+
+  <script src="Click.js"></script>
+</body>
+</html>
